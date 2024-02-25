@@ -2,10 +2,11 @@ import React from 'react'
 import Star from '../assets/Star.svg'
 import Loc from '../assets/Loc.svg'
 import './Css/Product.css'
+import { Link } from 'react-router-dom'
 const ProductDescription = () => {
   return (
     <div className='Product_Description'>
-        <div className='Close'>X</div>
+        <Link to="/" className='Close'>X</Link>
         <div className='Section1'>
             <div className='Product_Image'>
                 <img src='https://via.placeholder.com/300' alt='Product'/>
