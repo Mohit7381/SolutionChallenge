@@ -1,15 +1,36 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Logo from '../assets/Logo.svg'
 import Search from '../assets/Search.svg'
 import Location from '../assets/Location.svg'
 import './Css/Navbar.css'
 import LoginPage from './LoginPage'
 import { useState } from 'react'
+import { useAuth } from '../context/authContext'
+import { doSignOut } from '../auth'
 const Navbar = () => {
     const [login, setLogin] = useState(false)
+    const [loginBtn, setLoginBtn] = useState(true)
+    const [userName, setUserName] = useState('')
     const handelLogin = () =>{
         setLogin(!login)
     }
+    // const { userLoggedIn={} } = useAuth();
+    // if(currentUSer!==undefined){
+    //     console.log(currentUSer.displayName);
+    // }
+    const signOut = async()=>{
+        await doSignOut()
+        localStorage.removeItem('user')
+        localStorage.removeItem('email')
+        window.location.reload()
+    }
+    useEffect(()=>{
+        if(localStorage.getItem('user')){
+            setLoginBtn(false)
+            setLogin(false)
+            setUserName(JSON.parse(localStorage.getItem('user')));
+        }
+    })
   return (
     <>
     <div className='Navbar_contanier'>   
@@ -37,14 +58,20 @@ const Navbar = () => {
                     <li><a href="#">About Us</a></li>
                 </ul>
             </div>
+            {userName===""?
             <div className='LoginBtn'>
                 <button onClick={handelLogin}>Sign Up / Log In</button>
             </div>
+             : 
+            <div className='LoginBtn'>
+                <button onClick={signOut}>Sign Out</button>
+            </div>
+    }
         </nav>
     </div>
     {
         login ? 
-    <div className='LoginContainer' onClick={handelLogin}>
+    <div className='LoginContainer'>
         <LoginPage/>
     </div>
          : 
